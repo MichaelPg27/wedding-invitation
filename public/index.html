@@ -41,12 +41,9 @@
       display: block;
     }
 
-    /* Photo margins */
     .photo1 { margin-top: -20px; }
     .photo2 { margin-top: 0; }
     .photo3 { margin-top: 0; }
-
-    /* Move Main 2 up */
     .main2 { margin-top: -110px; }
 
     .image-container {
@@ -78,93 +75,30 @@
       left: 450px;
     }
 
-    /* --- Option 1: Start button with motion --- */
-    #play-button{
+    #play-button {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       z-index: 9999;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 260px;
-      height: 260px;
-      border-radius: 9999px;
-      background: radial-gradient(circle at 30% 30%, #fff, #ffeef0 70%, #ffd7dd 100%);
-      box-shadow: 0 12px 35px rgba(255, 140, 160, 0.35);
       padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
     }
 
-    #play-button img{
-      width: 150px;
+    #play-button img {
+      width: 250px;
       height: auto;
-      pointer-events: none;
-      user-select: none;
-      transform: translateY(0);
-      transition: transform .2s ease;
-      animation: env-float 3.6s ease-in-out infinite;
+      transition: transform 0.3s ease;
     }
 
-    #play-button::after{
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: inherit;
-      box-shadow: 0 0 0 0 rgba(255, 180, 190, 0.55);
-      animation: pulse 2.2s ease-out infinite;
-      pointer-events: none;
+    #play-button:hover img {
+      transform: scale(1.05);
     }
 
-    #play-button .cta-label{
-      position: absolute;
-      bottom: -34px;
-      left: 50%;
-      transform: translateX(-50%);
-      font: 600 16px/1.2 Arial, sans-serif;
-      color: #555;
-      letter-spacing: .2px;
-      background: rgba(255,255,255,.9);
-      padding: 6px 10px;
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.15);
-      white-space: nowrap;
-    }
+    #background-music { display: none; }
 
-    @media (hover:hover){
-      #play-button:hover img{ transform: translateY(-2px) scale(1.04); }
-    }
-
-    @keyframes env-float{
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-8px); }
-      100% { transform: translateY(0); }
-    }
-    @keyframes pulse{
-      0%   { box-shadow: 0 0 0 0 rgba(255, 180, 190, 0.55); }
-      70%  { box-shadow: 0 0 0 18px rgba(255, 180, 190, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 180, 190, 0); }
-    }
-
-    #play-button:focus-visible{
-      outline: 3px solid #ff9fb0;
-      outline-offset: 4px;
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      #play-button img{ animation: none !important; }
-      #play-button::after{ animation: none !important; }
-    }
-
-    /* Hide audio controls */
-    #background-music {
-      display: none;
-    }
-
-    /* Music toggle button */
     #music-toggle {
       position: fixed;
       bottom: 20px;
@@ -182,9 +116,32 @@
       justify-content: center;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
+    #music-toggle:hover { background: #f2f2f2; }
 
-    #music-toggle:hover {
-      background: #f2f2f2;
+    /* Audio banner */
+    #audio-banner {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fffae6;
+      border: 1px solid #e0c97f;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      z-index: 10001;
+    }
+
+    #audio-retry {
+      margin-left: 12px;
+      background: #ffd24d;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -199,15 +156,13 @@
   <!-- Content Container -->
   <div id="content" style="display:none;">
     <img src="/main1.png" alt="Invitación portada" class="img-fixed" />
-    <img src="/photo1.png" alt="My photo" class="img-fixed photo1" />
+    <img src="/photo1.png" alt="Photo 1" class="img-fixed photo1" />
 
     <div class="image-container main2">
       <img src="/main2.png" alt="Main 2" class="img-fixed" />
       <a href="https://maps.app.goo.gl/vzfPrj8UDkBsXSRS8?g_st=ipc"
          target="_blank"
-         class="boton-link como-llegar">
-        ¿Cómo llegar?
-      </a>
+         class="boton-link como-llegar">¿Cómo llegar?</a>
     </div>
 
     <img src="/photo2.png" alt="Photo 2" class="img-fixed photo2" />
@@ -218,18 +173,15 @@
       <img src="/main4.png" alt="Main 4" class="img-fixed" />
       <a href="https://forms.gle/o4wq9eVLGWW966a79"
          target="_blank"
-         class="boton-link confirmar">
-        Confirmar
-      </a>
+         class="boton-link confirmar">Confirmar</a>
     </div>
 
     <img src="/main5.png" alt="Main 5" class="img-fixed" />
   </div>
 
-  <!-- Animated Envelope Play Button -->
-  <button id="play-button" aria-label="Tap to start the invitation">
-    <img src="/envelope-button.png" alt="" />
-    <span class="cta-label">Toca para abrir</span>
+  <!-- Envelope Play Button -->
+  <button id="play-button">
+    <img src="/envelope-button.png" alt="Click to play">
   </button>
 
   <!-- Background music -->
@@ -237,8 +189,13 @@
     <source src="/song.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Music toggle button -->
+  <!-- Music toggle -->
   <button id="music-toggle" style="display:none;">🔊</button>
+
+  <!-- Audio blocked banner -->
+  <div id="audio-banner">
+    El audio está bloqueado. Toca <button id="audio-retry">Reintentar</button>
+  </div>
 
   <script>
     const video = document.getElementById('intro-video');
@@ -246,36 +203,77 @@
     const playButton = document.getElementById('play-button');
     const audio = document.getElementById('background-music');
     const musicToggle = document.getElementById('music-toggle');
+    const banner = document.getElementById('audio-banner');
+    const retryBtn = document.getElementById('audio-retry');
 
-    // Start video + music when envelope is clicked
-    playButton.addEventListener('click', () => {
-      video.muted = false;
-      video.play();
-      audio.play();
-      playButton.style.display = 'none';
-      musicToggle.style.display = 'flex';
+    audio.preload = 'auto';
+
+    playButton.addEventListener('click', async () => {
+      try {
+        video.muted = false;
+        await video.play();
+        await audio.play();
+
+        playButton.style.display = 'none';
+        musicToggle.style.display = 'flex';
+      } catch (err) {
+        console.warn('Autoplay blocked:', err);
+        banner.style.display = 'block';
+        playButton.style.display = 'none';
+        musicToggle.style.display = 'flex';
+      }
     });
 
-    // Show content when video ends
     video.addEventListener('ended', () => {
       video.classList.add('hidden');
       content.style.display = 'block';
     });
 
-    // Toggle music on/off
-    let musicPlaying = true;
-    musicToggle.addEventListener('click', () => {
-      if (musicPlaying) {
-        audio.pause();
-        musicToggle.textContent = "🔇";
-      } else {
-        audio.play();
-        musicToggle.textContent = "🔊";
+    let musicPlaying = false;
+    musicToggle.addEventListener('click', async () => {
+      try {
+        if (musicPlaying) {
+          await audio.pause();
+          musicToggle.textContent = "🔇";
+        } else {
+          await audio.play();
+          musicToggle.textContent = "🔊";
+        }
+        musicPlaying = !musicPlaying;
+      } catch (err) {
+        console.warn('Play/Pause blocked:', err);
       }
-      musicPlaying = !musicPlaying;
     });
-  </script>
 
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        try {
+          await audio.play();
+          banner.style.display = 'none';
+          musicToggle.textContent = "🔊";
+          musicPlaying = true;
+        } catch (err) {
+          console.warn('Retry failed:', err);
+        }
+      });
+    }
+
+    // --- first tap anywhere unlock (for iOS/Safari) ---
+    function unlockAudioOnce() {
+      audio.play()
+        .then(() => {
+          musicToggle.textContent = "🔊";
+          musicPlaying = true;
+        })
+        .catch((err) => {
+          console.warn('Unlock attempt failed:', err);
+        });
+
+      document.removeEventListener('touchstart', unlockAudioOnce, { passive: true });
+      document.removeEventListener('click', unlockAudioOnce, false);
+    }
+    document.addEventListener('touchstart', unlockAudioOnce, { passive: true, once: true });
+    document.addEventListener('click', unlockAudioOnce, { once: true });
+  </script>
 </body>
 </html>
-
