@@ -41,12 +41,9 @@
       display: block;
     }
 
-    /* Photo margins */
     .photo1 { margin-top: -20px; }
     .photo2 { margin-top: 0; }
     .photo3 { margin-top: 0; }
-
-    /* Move Main 2 up */
     .main2 { margin-top: -110px; }
 
     .image-container {
@@ -78,7 +75,6 @@
       left: 450px;
     }
 
-    /* Centered envelope play button */
     #play-button {
       position: fixed;
       top: 50%;
@@ -101,12 +97,10 @@
       transform: scale(1.05);
     }
 
-    /* Hide audio controls */
     #background-music {
       display: none;
     }
 
-    /* Music toggle button */
     #music-toggle {
       position: fixed;
       bottom: 20px;
@@ -140,46 +134,31 @@
 
   <!-- Content Container -->
   <div id="content" style="display:none;">
-    <!-- Main 1 -->
     <img src="public/main1.png" alt="Invitación portada" class="img-fixed" />
-
-    <!-- Photo 1 -->
     <img src="public/photo1.png" alt="My photo" class="img-fixed photo1" />
 
-    <!-- Main 2 with button -->
     <div class="image-container main2">
       <img src="public/main2.png" alt="Main 2" class="img-fixed" />
       <a href="https://maps.app.goo.gl/vzfPrj8UDkBsXSRS8?g_st=ipc"
          target="_blank"
-         class="boton-link como-llegar">
-        ¿Cómo llegar?
-      </a>
+         class="boton-link como-llegar">¿Cómo llegar?</a>
     </div>
 
-    <!-- Photo 2 -->
     <img src="public/photo2.png" alt="Photo 2" class="img-fixed photo2" />
-
-    <!-- Main 3 -->
     <img src="public/main3.png" alt="Detalles" class="img-fixed" />
-
-    <!-- Photo 3 -->
     <img src="public/photo3.png" alt="Photo 3" class="img-fixed photo3" />
 
-    <!-- Main 4 with button -->
     <div class="image-container">
       <img src="public/main4.png" alt="Main 4" class="img-fixed" />
       <a href="https://forms.gle/o4wq9eVLGWW966a79"
          target="_blank"
-         class="boton-link confirmar">
-        Confirmar
-      </a>
+         class="boton-link confirmar">Confirmar</a>
     </div>
 
-    <!-- Main 5 -->
     <img src="public/main5.png" alt="Main 5" class="img-fixed" />
   </div>
 
-  <!-- Centered Envelope Play Button -->
+  <!-- Envelope Play Button -->
   <button id="play-button">
     <img src="public/envelope-button.png" alt="Click to play">
   </button>
@@ -199,30 +178,27 @@
     const audio = document.getElementById('background-music');
     const musicToggle = document.getElementById('music-toggle');
 
-    // Start video + music when envelope is clicked
     playButton.addEventListener('click', () => {
       video.muted = false;
       video.play();
       audio.play();
       playButton.style.display = 'none';
-      musicToggle.style.display = 'flex'; // show music button
+      musicToggle.style.display = 'flex';
     });
 
-    // Show content when video ends
     video.addEventListener('ended', () => {
       video.classList.add('hidden');
       content.style.display = 'block';
     });
 
-    // Toggle music on/off
     let musicPlaying = true;
     musicToggle.addEventListener('click', () => {
       if (musicPlaying) {
         audio.pause();
-        musicToggle.textContent = "🔇"; // icon changes when muted
+        musicToggle.textContent = "🔇";
       } else {
         audio.play();
-        musicToggle.textContent = "🔊"; // icon when playing
+        musicToggle.textContent = "🔊";
       }
       musicPlaying = !musicPlaying;
     });
