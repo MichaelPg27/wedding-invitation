@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invitación de Boda - Michael & Jaselin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <style>
+    body, img, video {
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+
+    body {
+      background: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+
+    #intro-video {
+      width: 80%;
+      margin-left: 110px;
+      display: block;
+      transition: opacity 1s ease;
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .img-fixed {
+      width: 1080px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* Photo margins */
+    .photo1 { margin-top: -20px; }
+    .photo2 { margin-top: 0; }
+    .photo3 { margin-top: 0; }
+
+    /* Move Main 2 up */
+    .main2 { margin-top: -110px; }
+
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .boton-link {
+      position: absolute;
+      padding: 10px 20px;
+      font-size: 38px;
+      font-family: 'Dancing Script', Times, serif;
+      color: black;
+      text-decoration: none;
+      border-radius: 10px;
+      letter-spacing: 2px;
+      font-weight: 400;
+    }
+
+    .como-llegar {
+      background-color: #d5b2d3;
+      top: 780px;
+      left: 640px;
+    }
+
+    .confirmar {
+      background-color: #bddac2;
+      top: 780px;
+      left: 450px;
+    }
+
+    #play-button {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    #play-button img {
+      width: 250px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    #play-button:hover img {
+      transform: scale(1.05);
+    }
+
+    #background-music { display: none; }
+
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    #music-toggle:hover {
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro Video -->
+  <video id="intro-video" muted playsinline>
+    <source src="public/Video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div id="content" style="display:none;">
+    <img src="public/Main 1.png" alt="Invitación portada" class="img-fixed" />
+    <img src="public/Photo 1.png" alt="Photo 1" class="img-fixed photo1" />
+
+    <div class="image-container main2">
+      <img src="public/Main 2.png" alt="Main 2" class="img-fixed" />
+      <a href="https://maps.app.goo.gl/vzfPrj8UDkBsXSRS8?g_st=ipc"
+         target="_blank"
+         class="boton-link como-llegar">
+        ¿Cómo llegar?
+      </a>
+    </div>
+
+    <img src="public/Photo 2.png" alt="Photo 2" class="img-fixed photo2" />
+    <img src="public/Main 3.png" alt="Detalles" class="img-fixed" />
+    <img src="public/Photo 3.png" alt="Photo 3" class="img-fixed photo3" />
+
+    <div class="image-container">
+      <img src="public/Main 4.png" alt="Main 4" class="img-fixed" />
+      <a href="https://forms.gle/o4wq9eVLGWW966a79"
+         target="_blank"
+         class="boton-link confirmar">
+        Confirmar
+      </a>
+    </div>
+
+    <img src="public/Main 5.png" alt="Main 5" class="img-fixed" />
+  </div>
+
+  <button id="play-button">
+    <img src="public/envelope-button.png" alt="Click to play">
+  </button>
+
+  <audio id="background-music" loop>
+    <source src="public/song.mp3" type="audio/mpeg">
+  </audio>
+
+  <button id="music-toggle" style="display:none;">🔊</button>
+
+  <script>
+    const video = document.getElementById('intro-video');
+    const content = document.getElementById('content');
+    const playButton = document.getElementById('play-button');
+    const audio = document.getElementById('background-music');
+    const musicToggle = document.getElementById('music-toggle');
+
+    playButton.addEventListener('click', () => {
+      video.muted = false;
+      video.play();
+      audio.play();
+      playButton.style.display = 'none';
+      musicToggle.style.display = 'flex';
+    });
+
+    video.addEventListener('ended', () => {
+      video.classList.add('hidden');
+      content.style.display = 'block';
+    });
+
+    let musicPlaying = true;
+    musicToggle.addEventListener('click', () => {
+      if (musicPlaying) {
+        audio.pause();
+        musicToggle.textContent = "🔇";
+      } else {
+        audio.play();
+        musicToggle.textContent = "🔊";
+      }
+      musicPlaying = !musicPlaying;
+    });
+  </script>
+
+</body>
+</html>
