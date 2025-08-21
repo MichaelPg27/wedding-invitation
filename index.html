@@ -78,6 +78,7 @@
       left: 450px;
     }
 
+    /* Centered envelope play button */
     #play-button {
       position: fixed;
       top: 50%;
@@ -100,8 +101,12 @@
       transform: scale(1.05);
     }
 
-    #background-music { display: none; }
+    /* Hide audio controls */
+    #background-music {
+      display: none;
+    }
 
+    /* Music toggle button */
     #music-toggle {
       position: fixed;
       bottom: 20px;
@@ -129,16 +134,21 @@
 
   <!-- Intro Video -->
   <video id="intro-video" muted playsinline>
-    <source src="public/Video.mp4" type="video/mp4" />
+    <source src="public/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
+  <!-- Content Container -->
   <div id="content" style="display:none;">
-    <img src="public/Main 1.png" alt="Invitación portada" class="img-fixed" />
-    <img src="public/Photo 1.png" alt="Photo 1" class="img-fixed photo1" />
+    <!-- Main 1 -->
+    <img src="public/main1.png" alt="Invitación portada" class="img-fixed" />
 
+    <!-- Photo 1 -->
+    <img src="public/photo1.png" alt="My photo" class="img-fixed photo1" />
+
+    <!-- Main 2 with button -->
     <div class="image-container main2">
-      <img src="public/Main 2.png" alt="Main 2" class="img-fixed" />
+      <img src="public/main2.png" alt="Main 2" class="img-fixed" />
       <a href="https://maps.app.goo.gl/vzfPrj8UDkBsXSRS8?g_st=ipc"
          target="_blank"
          class="boton-link como-llegar">
@@ -146,12 +156,18 @@
       </a>
     </div>
 
-    <img src="public/Photo 2.png" alt="Photo 2" class="img-fixed photo2" />
-    <img src="public/Main 3.png" alt="Detalles" class="img-fixed" />
-    <img src="public/Photo 3.png" alt="Photo 3" class="img-fixed photo3" />
+    <!-- Photo 2 -->
+    <img src="public/photo2.png" alt="Photo 2" class="img-fixed photo2" />
 
+    <!-- Main 3 -->
+    <img src="public/main3.png" alt="Detalles" class="img-fixed" />
+
+    <!-- Photo 3 -->
+    <img src="public/photo3.png" alt="Photo 3" class="img-fixed photo3" />
+
+    <!-- Main 4 with button -->
     <div class="image-container">
-      <img src="public/Main 4.png" alt="Main 4" class="img-fixed" />
+      <img src="public/main4.png" alt="Main 4" class="img-fixed" />
       <a href="https://forms.gle/o4wq9eVLGWW966a79"
          target="_blank"
          class="boton-link confirmar">
@@ -159,17 +175,21 @@
       </a>
     </div>
 
-    <img src="public/Main 5.png" alt="Main 5" class="img-fixed" />
+    <!-- Main 5 -->
+    <img src="public/main5.png" alt="Main 5" class="img-fixed" />
   </div>
 
+  <!-- Centered Envelope Play Button -->
   <button id="play-button">
     <img src="public/envelope-button.png" alt="Click to play">
   </button>
 
+  <!-- Background music -->
   <audio id="background-music" loop>
     <source src="public/song.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Music toggle button -->
   <button id="music-toggle" style="display:none;">🔊</button>
 
   <script>
@@ -179,27 +199,30 @@
     const audio = document.getElementById('background-music');
     const musicToggle = document.getElementById('music-toggle');
 
+    // Start video + music when envelope is clicked
     playButton.addEventListener('click', () => {
       video.muted = false;
       video.play();
       audio.play();
       playButton.style.display = 'none';
-      musicToggle.style.display = 'flex';
+      musicToggle.style.display = 'flex'; // show music button
     });
 
+    // Show content when video ends
     video.addEventListener('ended', () => {
       video.classList.add('hidden');
       content.style.display = 'block';
     });
 
+    // Toggle music on/off
     let musicPlaying = true;
     musicToggle.addEventListener('click', () => {
       if (musicPlaying) {
         audio.pause();
-        musicToggle.textContent = "🔇";
+        musicToggle.textContent = "🔇"; // icon changes when muted
       } else {
         audio.play();
-        musicToggle.textContent = "🔊";
+        musicToggle.textContent = "🔊"; // icon when playing
       }
       musicPlaying = !musicPlaying;
     });
