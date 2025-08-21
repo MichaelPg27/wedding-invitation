@@ -44,7 +44,6 @@
     .photo1 { margin-top: -20px; }
     .photo2 { margin-top: 0; }
     .photo3 { margin-top: 0; }
-
     .main2 { margin-top: -110px; }
 
     .image-container {
@@ -98,9 +97,7 @@
       transform: scale(1.05);
     }
 
-    #background-music {
-      display: none;
-    }
+    #background-music { display: none; }
 
     #music-toggle {
       position: fixed;
@@ -119,9 +116,32 @@
       justify-content: center;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
+    #music-toggle:hover { background: #f2f2f2; }
 
-    #music-toggle:hover {
-      background: #f2f2f2;
+    /* Audio banner */
+    #audio-banner {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fffae6;
+      border: 1px solid #e0c97f;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      z-index: 10001;
+    }
+
+    #audio-retry {
+      margin-left: 12px;
+      background: #ffd24d;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -129,51 +149,53 @@
 
   <!-- Intro Video -->
   <video id="intro-video" muted playsinline>
-    <source src="video.mp4" type="video/mp4" />
+    <source src="/video.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- Content -->
+  <!-- Content Container -->
   <div id="content" style="display:none;">
-    <img src="main1.png" alt="invitación portada" class="img-fixed" />
-    <img src="photo1.png" alt="photo 1" class="img-fixed photo1" />
+    <img src="/main1.png" alt="Invitación portada" class="img-fixed" />
+    <img src="/photo1.png" alt="Photo 1" class="img-fixed photo1" />
 
     <div class="image-container main2">
-      <img src="main2.png" alt="main 2" class="img-fixed" />
+      <img src="/main2.png" alt="Main 2" class="img-fixed" />
       <a href="https://maps.app.goo.gl/vzfPrj8UDkBsXSRS8?g_st=ipc"
          target="_blank"
-         class="boton-link como-llegar">
-        ¿Cómo llegar?
-      </a>
+         class="boton-link como-llegar">¿Cómo llegar?</a>
     </div>
 
-    <img src="photo2.png" alt="photo 2" class="img-fixed photo2" />
-    <img src="main3.png" alt="detalles" class="img-fixed" />
-    <img src="photo3.png" alt="photo 3" class="img-fixed photo3" />
+    <img src="/photo2.png" alt="Photo 2" class="img-fixed photo2" />
+    <img src="/main3.png" alt="Detalles" class="img-fixed" />
+    <img src="/photo3.png" alt="Photo 3" class="img-fixed photo3" />
 
     <div class="image-container">
-      <img src="main4.png" alt="main 4" class="img-fixed" />
+      <img src="/main4.png" alt="Main 4" class="img-fixed" />
       <a href="https://forms.gle/o4wq9eVLGWW966a79"
          target="_blank"
-         class="boton-link confirmar">
-        Confirmar
-      </a>
+         class="boton-link confirmar">Confirmar</a>
     </div>
 
-    <img src="main5.png" alt="main 5" class="img-fixed" />
+    <img src="/main5.png" alt="Main 5" class="img-fixed" />
   </div>
 
-  <!-- Envelope -->
+  <!-- Envelope Play Button -->
   <button id="play-button">
-    <img src="envelope-button.png" alt="Click to play">
+    <img src="/envelope-button.png" alt="Click to play">
   </button>
 
-  <!-- Music -->
+  <!-- Background music -->
   <audio id="background-music" loop>
-    <source src="song.mp3" type="audio/mpeg">
+    <source src="/song.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Music toggle -->
   <button id="music-toggle" style="display:none;">🔊</button>
+
+  <!-- Audio blocked banner -->
+  <div id="audio-banner">
+    El audio está bloqueado. Toca <button id="audio-retry">Reintentar</button>
+  </div>
 
   <script>
     const video = document.getElementById('intro-video');
@@ -181,13 +203,25 @@
     const playButton = document.getElementById('play-button');
     const audio = document.getElementById('background-music');
     const musicToggle = document.getElementById('music-toggle');
+    const banner = document.getElementById('audio-banner');
+    const retryBtn = document.getElementById('audio-retry');
 
-    playButton.addEventListener('click', () => {
-      video.muted = false;
-      video.play();
-      audio.play();
-      playButton.style.display = 'none';
-      musicToggle.style.display = 'flex';
+    audio.preload = 'auto';
+
+    playButton.addEventListener('click', async () => {
+      try {
+        video.muted = false;
+        await video.play();
+        await audio.play();
+
+        playButton.style.display = 'none';
+        musicToggle.style.display = 'flex';
+      } catch (err) {
+        console.warn('Autoplay blocked:', err);
+        banner.style.display = 'block';
+        playButton.style.display = 'none';
+        musicToggle.style.display = 'flex';
+      }
     });
 
     video.addEventListener('ended', () => {
@@ -195,18 +229,51 @@
       content.style.display = 'block';
     });
 
-    let musicPlaying = true;
-    musicToggle.addEventListener('click', () => {
-      if (musicPlaying) {
-        audio.pause();
-        musicToggle.textContent = "🔇";
-      } else {
-        audio.play();
-        musicToggle.textContent = "🔊";
+    let musicPlaying = false;
+    musicToggle.addEventListener('click', async () => {
+      try {
+        if (musicPlaying) {
+          await audio.pause();
+          musicToggle.textContent = "🔇";
+        } else {
+          await audio.play();
+          musicToggle.textContent = "🔊";
+        }
+        musicPlaying = !musicPlaying;
+      } catch (err) {
+        console.warn('Play/Pause blocked:', err);
       }
-      musicPlaying = !musicPlaying;
     });
-  </script>
 
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        try {
+          await audio.play();
+          banner.style.display = 'none';
+          musicToggle.textContent = "🔊";
+          musicPlaying = true;
+        } catch (err) {
+          console.warn('Retry failed:', err);
+        }
+      });
+    }
+
+    // --- first tap anywhere unlock (for iOS/Safari) ---
+    function unlockAudioOnce() {
+      audio.play()
+        .then(() => {
+          musicToggle.textContent = "🔊";
+          musicPlaying = true;
+        })
+        .catch((err) => {
+          console.warn('Unlock attempt failed:', err);
+        });
+
+      document.removeEventListener('touchstart', unlockAudioOnce, { passive: true });
+      document.removeEventListener('click', unlockAudioOnce, false);
+    }
+    document.addEventListener('touchstart', unlockAudioOnce, { passive: true, once: true });
+    document.addEventListener('click', unlockAudioOnce, { once: true });
+  </script>
 </body>
 </html>
